@@ -10,5 +10,10 @@ npm-debug.*
 *.orig.*
 web-build/
 
+<<<<<<< HEAD
 # macOS
 .DS_Store
+=======
+#macOS
+.DS_Store
+>>>>>>> main
