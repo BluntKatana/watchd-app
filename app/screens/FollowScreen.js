@@ -8,6 +8,7 @@ import Tabs from "../components/Tabs";
 import Header from "../components/Header";
 import { MediumText } from "../components/Text";
 import FollowUser from "./../components/FollowUser";
+import UserCard from "../components/Cards/UserCard";
 
 function FollowScreen({ navigation, route }) {
   const { userData } = useUser();
@@ -64,9 +65,7 @@ function FollowingTab({ following }) {
         data={following}
         keyExtractor={(user) => user.uid}
         renderItem={({ item }) => (
-          <View>
-            <MediumText>{item.email}</MediumText>
-          </View>
+          <UserCard user={item} />
         )}
       />
     </View>
@@ -82,9 +81,7 @@ function FollowersTab({ followers }) {
         data={followers}
         keyExtractor={(user) => user.uid}
         renderItem={({ item }) => (
-          <View>
-            <MediumText>{item.email}</MediumText>
-          </View>
+          <UserCard user={item} />
         )}
       />
     </View>
