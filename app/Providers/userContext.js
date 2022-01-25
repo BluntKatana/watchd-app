@@ -121,7 +121,7 @@ export function UserProvider({ children }) {
     db.deleteValueFromUserArray("followers", uid, user.uid);
     let newUserData = { ...userData };
     newUserData.following = newUserData.following.filter(
-      (otherUid) => otherUid !== id
+      (otherUid) => otherUid !== uid
     );
     setUserData(newUserData);
   }

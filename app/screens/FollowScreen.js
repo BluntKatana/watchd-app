@@ -6,12 +6,11 @@ import * as db from "../api/database";
 import Screen from "../components/Screen";
 import Tabs from "../components/Tabs";
 import Header from "../components/Header";
-import { MediumText } from "../components/Text";
 import FollowUser from "./../components/FollowUser";
 import UserCard from "../components/Cards/UserCard";
 
 function FollowScreen({ navigation, route }) {
-  const { userData } = useUser();
+  const { userData, unfollowUser } = useUser();
   const [activeTab, setActiveTab] = useState(route.params.tab || 0);
   const [followingList, setFollowingList] = useState([]);
   const [followersList, setFollowersList] = useState([]);
@@ -49,14 +48,18 @@ function FollowScreen({ navigation, route }) {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
-        {activeTab == 0 && <FollowersTab followers={followersList} />}
-        {activeTab == 1 && <FollowingTab following={followingList} />}
+        {activeTab == 0 && (
+          <FollowersTab followers={followersList} unfollowUser={unfollowUser} />
+        )}
+        {activeTab == 1 && (
+          <FollowingTab following={followingList} unfollowUser={unfollowUser} />
+        )}
       </View>
     </Screen>
   );
 }
 
-function FollowingTab({ following }) {
+function FollowingTab({ following, unfollowUser }) {
   return (
     <View>
       <FlatList
@@ -65,7 +68,7 @@ function FollowingTab({ following }) {
         data={following}
         keyExtractor={(user) => user.uid}
         renderItem={({ item }) => (
-          <UserCard user={item} />
+          <UserCard user={item} unfollowUser={unfollowUser} following />
         )}
       />
     </View>
@@ -80,9 +83,7 @@ function FollowersTab({ followers }) {
         initialNumToRender={6}
         data={followers}
         keyExtractor={(user) => user.uid}
-        renderItem={({ item }) => (
-          <UserCard user={item} />
-        )}
+        renderItem={({ item }) => <UserCard user={item} />}
       />
     </View>
   );

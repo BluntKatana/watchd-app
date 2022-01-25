@@ -1,33 +1,41 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Image } from "react-native-expo-image-cache";
 
 import styleConfig from "../../config/styles";
+import { MediumText, TitleText } from "../Text";
 import Icon from "../Icon";
-import { TitleText } from "../Text";
 
 const { colors, shadow } = styleConfig;
 
-function UserCard({ user }) {
+function UserCard({ user, unfollowUser, following = false }) {
+  const handleDeleteUser = () => {
+    console.log(user);
+    if (following) {
+      unfollowUser(user.uid);
+    }
+  };
+
   return (
-    <View style={[styles.card, { flex: 1 }]}>
-      <LinearGradient
-        style={styles.linearGradient}
-        colors={colors.gradient}
-        locations={colors.gradient_locations}
-      >
-        <View style={styles.logoContainer}>
-              <Image source={{ uri: user.picture }} />
-        </View>
-        
+    <View style={styles.card}>
+      <View style={styles.logoContainer}>
+        <Image uri={user.picture} style={{ flex: 1 }} />
+      </View>
+
+      <View style={styles.textContainer}>
         <View style={styles.detailsContainer}>
-          <TitleText numberOfLines={3}>{user.name}</TitleText>
+          <TitleText numberOfLines={2}>{user.name}</TitleText>
+          {following && (
+            <TouchableOpacity onPress={handleDeleteUser}>
+              <Icon name="close" />
+            </TouchableOpacity>
+          )}
         </View>
-      </LinearGradient>
+        <View style={styles.detailsContainer}>
+          <MediumText>{`${user.following.length} following`}</MediumText>
+          <MediumText>{`${user.followers.length} followers`}</MediumText>
+        </View>
+      </View>
     </View>
   );
 }
@@ -37,12 +45,24 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     borderRadius: 5,
     marginBottom: 20,
+    flexDirection: "row",
+    padding: 10,
+  },
+  textContainer: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: "space-between",
   },
   detailsContainer: {
-    flex: 0.7,
-    marginLeft: 10,
-    height: "100%",
+    flexDirection: "row",
     justifyContent: "space-between",
+    alignContent: "center",
+  },
+  logoContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    overflow: "hidden",
   },
   text: {
     textAlign: "center",

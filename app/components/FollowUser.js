@@ -15,7 +15,7 @@ function FollowUser({ reload }) {
   const handleAddUser = async () => {
     if (!userData.following.includes(userValue) && userValue != "") {
       const invalidAction = await followUser(userValue);
-      if (!invalidAction) {
+      if (invalidAction) {
         setErrorMessage("Something went wrong, try again!");
       } else {
         setErrorMessage("");
