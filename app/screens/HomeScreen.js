@@ -67,19 +67,23 @@ function HomeScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <ActivityIndicator visible={loading} />
+
       <MovieCardList
-        data={feed}
+        data={feed.slice(0, 25)}
         navigation={navigation}
         showWatchlist
         setVisiblePopUp={handlePopUp}
         onRefresh={() => setAllMovieDetails()}
         refreshing={refreshing}
         Header={
-          <HomeScreenHeader
-            dataPopularMovies={getPopularMoviesApi.data.results}
-            navigation={navigation}
-            userData={userData}
-          />
+          <>
+            <HomeScreenHeader
+              dataPopularMovies={getPopularMoviesApi.data.results}
+              navigation={navigation}
+              userData={userData}
+              feedLength={feed.length}
+            />
+          </>
         }
       />
       <PopUp message={messagePopUp} visible={showPopup} />
@@ -87,7 +91,12 @@ function HomeScreen({ navigation }) {
   );
 }
 
-function HomeScreenHeader({ dataPopularMovies, navigation, userData }) {
+function HomeScreenHeader({
+  dataPopularMovies,
+  navigation,
+  userData,
+  feedLength,
+}) {
   return (
     <View>
       <LogoHeader />
@@ -98,6 +107,11 @@ function HomeScreenHeader({ dataPopularMovies, navigation, userData }) {
         paddingLeft={20}
       />
       <HeaderText style={styles.header}>Your friends watchd</HeaderText>
+      {feedLength == 0 && (
+        <MediumText style={styles.header}>
+          Add some friends to see what they are watching!
+        </MediumText>
+      )}
       {!userData && (
         <View style={{ paddingHorizontal: 20 }}>
           <NotLoggedIn

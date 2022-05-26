@@ -6,20 +6,18 @@ import { useAuth } from "./authContext";
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
-  const [userData, setUserData] = useState(null);
   const [userReviews, setUserReviews] = useState([]);
 
-  const { user } = useAuth();
+  const { user, userData, setUserData } = useAuth();
 
   // Fill the userData from server on login and make sure it dissapears on log out
   useEffect(() => {
     console.log("userChange");
-    const unsubscribe = retrieveUserInformation();
-
-    return unsubscribe;
+    retrieveUserInformation();
   }, [user]);
 
   async function retrieveUserInformation() {
+    console.log(user);
     if (user) {
       await db.getUser(user.uid).then((userDataFromDB) => {
         setUserData(userDataFromDB);
@@ -126,6 +124,19 @@ export function UserProvider({ children }) {
     setUserData(newUserData);
   }
 
+  function getFollowingMovieReviews(setFollowingReviews, movieId) {
+    db.getReviewsAndUserInfoFromArray(userData.following).then((reviews) => {
+      const { followingInformationFromDB, followingReviewsFromDB } = reviews;
+      const filteredReviews = reviews.followingReviewsFromDB.filter(
+        ({ review }) => review.movieId == movieId
+      );
+      setFollowingReviews({
+        followingInformationFromDB,
+        followingReviewsFromDB: filteredReviews,
+      });
+    });
+  }
+
   const value = {
     addToWatchlist,
     removeFromWatchlist,
@@ -139,6 +150,7 @@ export function UserProvider({ children }) {
     user,
     followUser,
     unfollowUser,
+    getFollowingMovieReviews,
   };
 
   // Wait for the userData to load until the rest of the app is loaded

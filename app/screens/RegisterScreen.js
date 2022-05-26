@@ -38,9 +38,9 @@ const RegisterScreen = ({ route, navigation }) => {
   const { signUp } = useAuth();
 
   const handleSubmit = (user, { resetForm }) => {
-    signUp(user.email, user.password, user.username)
-      .then(() => navigation.goBack())
-      .catch((error) => setErrorMessage(getError(error.code)));
+    signUp(user.email, user.password, user.username).catch((error) =>
+      setErrorMessage(getError(error.code))
+    );
   };
 
   const textInputStyle = {

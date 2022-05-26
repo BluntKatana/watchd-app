@@ -14,13 +14,16 @@ const AuthContext = createContext({
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [loadingUser, setLoadingUser] = useState(false);
 
   // Create a user and add it to the Users collection
   async function signUp(email, password, name) {
     await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, { displayName: name });
-    addUser(auth.currentUser.uid, email, name);
+    const newUserData = await addUser(auth.currentUser.uid, email, name);
+    console.log(newUserData);
+    setUserData(newUserData);
   }
 
   // Log in a user
@@ -31,6 +34,7 @@ export function AuthProvider({ children }) {
   // Log out a user
   function logOut() {
     return signOut(auth);
+    setUserData(null);
   }
 
   // Reset a user's password
@@ -72,6 +76,8 @@ export function AuthProvider({ children }) {
     logIn,
     logOut,
     resetPassword,
+    userData,
+    setUserData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

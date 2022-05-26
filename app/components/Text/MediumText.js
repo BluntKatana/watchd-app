@@ -21,7 +21,7 @@ function MediumText({ children, style, onPress, ...otherProps }) {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 14,
+    fontSize: 12,
     color: colors.white,
   },
 });

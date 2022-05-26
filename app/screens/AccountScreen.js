@@ -62,6 +62,11 @@ function AccountScreen({ navigation }) {
               <HeaderText style={styles.header}>
                 Recently watched movies
               </HeaderText>
+              {reviews.length == 0 && (
+                <MediumText style={styles.exceptionText}>
+                  Write some reviews to see them here!
+                </MediumText>
+              )}
               <View>
                 <PosterList
                   data={reviews.map((r) => r.movieInfo) || []}
@@ -71,9 +76,11 @@ function AccountScreen({ navigation }) {
                   paddingLeft={20}
                 />
               </View>
-              <HeaderText style={styles.header}>
-                Your top rated movies
-              </HeaderText>
+              {reviews.length > 0 && (
+                <HeaderText style={styles.header}>
+                  Your top rated movies
+                </HeaderText>
+              )}
               <View>
                 <PosterList
                   data={reviews.map((r) => r.movieInfo) || []}
@@ -104,7 +111,8 @@ function AccountScreen({ navigation }) {
 }
 
 function AccountHeader({ userData, userReviews, navigation }) {
-  const date = userData.createdAt.toDate().toDateString().slice(4, 16);
+  console.log(userData);
+  const date = "unknown";
   return (
     <View style={styles.headerContainer}>
       <Image style={styles.userPicture} source={{ uri: userData.picture }} />
@@ -153,7 +161,6 @@ const styles = StyleSheet.create({
   },
   userName: {
     marginTop: 10,
-    textTransform: "capitalize",
   },
   userDate: {
     marginTop: 5,
@@ -176,8 +183,11 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 14,
   },
+  exceptionText: {
+    marginHorizontal: 20,
+  },
   header: {
-    marginVertical: 10,
+    marginTop: 20,
     marginHorizontal: 20,
   },
 });

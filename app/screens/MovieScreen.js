@@ -16,11 +16,12 @@ import Tabs from "../components/Tabs";
 import movies from "../api/movies";
 
 function MovieScreen({ route, navigation }) {
-  const { userData, getMovieReview } = useUser();
+  const { userData, getMovieReview, getFollowingMovieReviews } = useUser();
   const [activeTab, setActiveTab] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [movieInformation, setMovieInformation] = useState({});
   const [movieReview, setMovieReview] = useState({});
+  const [followingReviews, setFollowingReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const movieId = route.params;
@@ -28,6 +29,7 @@ function MovieScreen({ route, navigation }) {
   useEffect(() => {
     movies.getMovieInformation(movieId, setMovieInformation, setLoading);
     setMovieReview(getMovieReview(movieId));
+    getFollowingMovieReviews(setFollowingReviews, movieId);
   }, []);
 
   useEffect(() => {
@@ -71,7 +73,11 @@ function MovieScreen({ route, navigation }) {
                 <MDetails movieInformation={movieInformation} />
               )}
               {activeTab == 1 && (
-                <MReviews movieInformation={movieInformation} />
+                <MReviews
+                  followingReviews={followingReviews}
+                  userReview={movieReview}
+                  user={userData}
+                />
               )}
               {activeTab == 2 && (
                 <MRecommendations
