@@ -22,14 +22,14 @@ function FollowScreen({ navigation, route }) {
 
   useEffect(() => {
     getFollowInformation();
-  }, [userData.followers, userData.following]);
+  }, [userData?.followers, userData?.following]);
 
   const getFollowInformation = async () => {
     const following = await Promise.all(
-      userData.following.map((uid) => db.getUser(uid))
+      userData?.following.map((uid) => db.getUser(uid))
     );
     const followers = await Promise.all(
-      userData.followers.map((uid) => db.getUser(uid))
+      userData?.followers.map((uid) => db.getUser(uid))
     );
 
     setFollowingList(following);

@@ -34,7 +34,6 @@ export function AuthProvider({ children }) {
   // Log out a user
   function logOut() {
     return signOut(auth);
-    setUserData(null);
   }
 
   // Reset a user's password
@@ -58,6 +57,7 @@ export function AuthProvider({ children }) {
 
   // force refresh the token every 10 minutes
   useEffect(() => {
+    logOut();
     const handle = setInterval(async () => {
       setLoadingUser(true);
       const currentUser = auth.currentUser;

@@ -125,16 +125,18 @@ export function UserProvider({ children }) {
   }
 
   function getFollowingMovieReviews(setFollowingReviews, movieId) {
-    db.getReviewsAndUserInfoFromArray(userData.following).then((reviews) => {
-      const { followingInformationFromDB, followingReviewsFromDB } = reviews;
-      const filteredReviews = reviews.followingReviewsFromDB.filter(
-        ({ review }) => review.movieId == movieId
-      );
-      setFollowingReviews({
-        followingInformationFromDB,
-        followingReviewsFromDB: filteredReviews,
+    if (userData) {
+      db.getReviewsAndUserInfoFromArray(userData.following).then((reviews) => {
+        const { followingInformationFromDB, followingReviewsFromDB } = reviews;
+        const filteredReviews = reviews.followingReviewsFromDB.filter(
+          ({ review }) => review.movieId == movieId
+        );
+        setFollowingReviews({
+          followingInformationFromDB,
+          followingReviewsFromDB: filteredReviews,
+        });
       });
-    });
+    }
   }
 
   const value = {

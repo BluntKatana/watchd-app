@@ -21,7 +21,7 @@ function MovieReviews({ followingReviews, userReview, user }) {
         </>
       )}
       <HeaderText style={styles.header}>Other reviews</HeaderText>
-      {followerReviews.length == 0 ? (
+      {!followerReviews || followerReviews.length == 0 ? (
         <MediumText>No reviews written</MediumText>
       ) : (
         followerReviews.map((e) => {
