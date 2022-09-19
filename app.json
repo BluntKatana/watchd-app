@@ -24,6 +24,9 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "A movie app"
+    "description": "A movie app",
+    "android": {
+      "package": "com.stuudydemo.watchd"
+    }
   }
 }
